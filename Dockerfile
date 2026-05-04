@@ -39,7 +39,13 @@ RUN git clone --depth 1 --branch v26.0.9 https://github.com/jgraph/drawio.git /d
 # ---------------------------------------------------------------------------
 FROM python:3.12-alpine AS production
 
-RUN apk add --no-cache nginx libpq supervisor && rm -rf /var/cache/apk/*
+RUN apk add --no-cache nginx libpq supervisor postgresql postgresql-contrib su-exec && rm -rf /var/cache/apk/*
+
+RUN addgroup -S postgres && adduser -S postgres -G postgres && \
+    mkdir -p /var/lib/postgresql /run/postgresql && \
+    chown -R postgres:postgres /var/lib/postgresql /run/postgresql
+
+VOLUME /var/lib/postgresql/data
 
 WORKDIR /app
 
