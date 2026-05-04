@@ -42,7 +42,7 @@ else
   log "Existing .env detected — keeping current secrets."
 fi
 
-COMPOSE="docker compose -f docker-compose.db.yml"
+COMPOSE="docker compose"
 
 # Build images with one retry. The frontend build clones jgraph/drawio
 # (~50 MB) from GitHub and runs npm ci, both of which can fail on a
@@ -55,7 +55,7 @@ if ! $COMPOSE build; then
     fail "Build failed twice. Diagnostics:"
     $COMPOSE ps || true
     docker images || true
-    fail "Re-run manually:  docker compose -f docker-compose.db.yml build"
+    fail "Re-run manually:  docker compose build"
     exit 0
   fi
 fi
